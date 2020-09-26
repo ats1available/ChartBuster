@@ -71,45 +71,35 @@ def predict():
     X_train, X_test, y_train, y_test = train_test_split(
       X, y, test_size=0.3, random_state=0)
     
-    rg1=XGBRegressor()
+    rg1=AdaBoostRegressor()
     rg1.fit(X_train,y_train)
-    ypred=rg1.predict(X_test)
+    #ypred=rg1.predict(X_test)
     #sqrt(mean_squared_error(y_test,ypred))
     
-    rg2=AdaBoostRegressor()
-    rg2.fit(X_train,y_train)
-    ypred=rg2.predict(X_test)
-    #sqrt(mean_squared_error(y_test,ypred))
-    
-    rg3=ExtraTreesRegressor()
-    rg3.fit(X_train,y_train)
-    ypred=rg3.predict(X_test)
-    #sqrt(mean_squared_error(y_test,ypred))
-    
-    rg4=GradientBoostingRegressor(n_estimators=300,learning_rate=0.1)
+    rg2=GradientBoostingRegressor(n_estimators=300,learning_rate=0.1)
     # para={'n_estimators':[250,300],'learning_rate':[1,0.1,0.01]}
     # grid=GridSearchCV(estimator=rg8,param_grid=para,verbose=1,cv=10,n_jobs=-1)
-    rg4.fit(X_train,y_train)
-    ypred=rg4.predict(X_test)
+    rg2.fit(X_train,y_train)
+    #ypred=rg2.predict(X_test)
     #sqrt(mean_squared_error(y_test,ypred))
     
-    rg5=RandomForestRegressor(random_state=0,n_estimators=20,max_depth=15)
+    rg3=RandomForestRegressor(random_state=0,n_estimators=20,max_depth=15)
     # para={'n_estimators':[5,10,30,20],'max_depth':[5,8,20,17]}
     # grid=GridSearchCV(estimator=rg9,param_grid=para,cv=10,verbose=1,n_jobs=-1)
-    rg5.fit(X_train,y_train)
-    ypred=rg5.predict(X_test)
+    rg3.fit(X_train,y_train)
+    #ypred=rg3.predict(X_test)
     #sqrt(mean_squared_error(y_test,ypred))
     
-    rg6=StackingRegressor([rg3,rg4,rg1,rg5],meta_regressor=rg5)
+    rg6=StackingRegressor([rg1,rg2],meta_regressor=rg3)
     rg6.fit(X_train,y_train)
-    ypred=rg6.predict(X_test)
+    #ypred=rg6.predict(X_test)
     #sqrt(mean_squared_error(y_test,ypred))
     f=f.iloc[:,:]
     y_pred=rg6.predict(f)
     
     y_pred=y_pred.astype(int)
 
-    return render_template('index.html', prediction_text='Numberbof Views is {}'.format(y_pred))
+    return render_template('index.html', prediction_text='Numberb of Views is {}'.format(y_pred))
 
 
 
